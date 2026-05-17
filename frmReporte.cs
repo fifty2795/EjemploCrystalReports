@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -30,15 +31,15 @@ namespace CrystalReportsExample
             clientes.Insert(0, new Cliente { IdCliente = 0, Nombre = "Todos" });
 
             cmbClientes.DataSource = clientes;
-            cmbClientes.DisplayMember = "Nombre";   
-            cmbClientes.ValueMember = "IdCliente"; 
+            cmbClientes.DisplayMember = "Nombre";
+            cmbClientes.ValueMember = "IdCliente";
             cmbClientes.SelectedIndex = 0;
 
             dtpInicio.ShowCheckBox = true;
-            dtpInicio.Checked = false;  
+            dtpInicio.Checked = false;
 
             dtpFin.ShowCheckBox = true;
-            dtpFin.Checked = false;            
+            dtpFin.Checked = false;
         }
 
         private void btnGenerarRpt_Click(object sender, EventArgs e)
@@ -49,10 +50,16 @@ namespace CrystalReportsExample
                 DateTime? fechaFin = dtpFin.Checked ? dtpFin.Value.Date : (DateTime?)null;
                 int? clienteId = null;
 
-                var report = new ReportDocument();
+                // Obtener ruta de rpt
+                string rutaProyecto = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
+                string rutaReporte = Path.Combine(rutaProyecto, "CrystalReport1.rpt");
 
-                report.Load(@"D:\repos\CrystalReportsExample\CrystalReport1.rpt");
+                var report = new ReportDocument();               
+                
+                // Load rpt
+                report.Load(rutaReporte);
 
+                // Get Cliente ID
                 if (cmbClientes.SelectedValue.ToString() != "0")
                 {
                     if (int.TryParse(cmbClientes.SelectedValue.ToString(), out var cid)) clienteId = cid;
@@ -62,8 +69,6 @@ namespace CrystalReportsExample
                 {
                     ServerName = @"ALEJANDRO\SQLEXPRESS",
                     DatabaseName = "MVC",
-                    //UserID = "usuario_sql",
-                    //Password = "password_sql",
                     IntegratedSecurity = true
                 };
 
@@ -76,9 +81,10 @@ namespace CrystalReportsExample
                     table.Location = table.Location;
                 }
 
-                report.SetParameterValue("@fechaInicio", (object)fechaInicio ?? DBNull.Value);
-                report.SetParameterValue("@fechaFin", (object)fechaFin ?? DBNull.Value);
-                report.SetParameterValue("@idCliente", (object)clienteId ?? DBNull.Value);
+                // Set Params
+                report.SetParameterValue("@FechaInicio", (object)fechaInicio ?? DBNull.Value);
+                report.SetParameterValue("@FechaFin", (object)fechaFin ?? DBNull.Value);
+                report.SetParameterValue("@IdCliente", (object)clienteId ?? DBNull.Value);
 
                 crystalReportViewer1.ReportSource = report;
                 crystalReportViewer1.Refresh();
@@ -111,6 +117,11 @@ namespace CrystalReportsExample
             }
 
             return lista;
+        }
+
+        private void crystalReportViewer1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

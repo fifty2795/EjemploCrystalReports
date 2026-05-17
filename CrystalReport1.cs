@@ -106,7 +106,7 @@ namespace CrystalReportsExample {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_fechaInicio {
+        public CrystalDecisions.Shared.IParameterField Parameter_FechaInicio {
             get {
                 return this.DataDefinition.ParameterFields[0];
             }
@@ -114,7 +114,7 @@ namespace CrystalReportsExample {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_fechaFin {
+        public CrystalDecisions.Shared.IParameterField Parameter_FechaFin {
             get {
                 return this.DataDefinition.ParameterFields[1];
             }
@@ -122,7 +122,7 @@ namespace CrystalReportsExample {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_idCliente {
+        public CrystalDecisions.Shared.IParameterField Parameter_IdCliente {
             get {
                 return this.DataDefinition.ParameterFields[2];
             }
